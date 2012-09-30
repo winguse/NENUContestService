@@ -1,0 +1,96 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+      <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+		<a class="brand" href="." rel="popover" data-placement="bottom" data-content="点击回到首页&lt;br/&gt;&lt;small&gt;(See about for details, by Winguse)&lt;/small&gt;" data-original-title="东师ACM赛事服务系统">NENU Contest Service</a>
+        <div class="nav-collapse">
+		<%if (s.user != null){%>
+          <ul class="nav">
+		<li><a href="user_update_information.jsp">密码修改(Password)</a></li>
+		<li><a href="message_borad.jsp?type=<%=Message.MESSAGE_TYPE_ROOM_EXCHANGE%>">拼房信息(Sharing Room)</a></li>
+		<li><a href="message_borad.jsp">综合提问(Q&amp;A)</a></li>
+<%--		<li><a href="?lang=<%=s.lang=="cn"?"en":"cn"%>"><%=s.lang=="cn"?"English":"中文"%></a></li> --%>
+	</ul>
+		<%}%>
+		<ul class="nav pull-right">
+		<%if (s.user != null){%>
+		<li><a href="logout.jsp">登出(Logout)</a></li>
+		<%}%>
+		<li><a data-toggle="modal" href="#about">关于(About)</a></li>
+		</ul>
+	</div>
+      <div class="nav-collapse">
+        <!-- .nav, .navbar-search, .navbar-form, etc -->
+      </div>
+	</div>
+	</div>
+	</div>
+	<div class="container">
+	<%if (s.user != null){%>
+<div class="subnav">
+    <ul class="nav nav-pills">
+		<li id="sub_home"><a href="./" title="Home">首页</a></li>
+	<%if (s.user.getPermission() == User.USER_ADMINISTRATOR){%>	
+    <li class="dropdown"><a class="dropdown-toggle"
+	data-toggle="dropdown" href="#">酒店与预订 <b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li><a href="admin_hotel_room.jsp">酒店信息管理</a></li>
+		<li><a href="admin_booked_rooms.jsp">订房信息汇总</a></li>
+	</ul></li>
+	<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">领队/参赛队/志愿者 <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+        	<li><a href="admin_leader_list.jsp">领队列表</a></li>
+			<li><a href="admin_plan.jsp">领队行程计划</a></li>
+			<li><a href="admin_team_list.jsp">参赛队</a></li>
+			<li><a href="admin_team_list_verify.jsp">参赛队审核</a></li>
+			<li><a href="admin_volunteer_list.jsp">志愿者</a></li>
+       		<li><a href="admin_volunteer_verify.jsp">志愿者审核</a></li>
+		 </ul>
+      </li>
+		<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">人物信息汇总 <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+		<li><a href="admin_get_all_person.jsp?type=4">教练</a></li>
+		<li><a href="admin_get_all_person.jsp?type=8">队员</a></li>
+		<li><a href="admin_get_all_person.jsp?type=16">替补队员</a></li>
+		<li><a href="admin_get_all_person.jsp?type=2">随行人员</a></li>
+		<li><a href="admin_get_all_person.jsp?type=1">志愿者</a></li>
+		<li><a href="admin_get_all_person.jsp?type=0">其他人员</a></li>
+	        </ul>
+      </li>
+	<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">系统 <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+			<li><a href="admin_all_statistics.jsp"><b style="color:red;">统计汇总</b></a></li>
+       		<li><a href="admin_system_settings.jsp">全局设置</a></li>
+			<li><a href="admin_all_user_list.jsp">登录用户表信息</a></li>
+			<li><a href="admin_import_data.jsp">导入ICPC数据</a></li>
+			<li title="当ICPC官方队伍信息被修改都时候，可以重新导入这些信息到对应的队伍上，前提是，队伍名都英文名字段和ICPC严格对应。"><a href="admin_import_data_add_icpc_org_team_info.jsp">更新ICPC队伍信息</a></li>
+			<li><a href="exportData">导出CSV格式数据</a></li>
+			<li><a href="admin_log.jsp">系统日志</a></li>
+       		<li title="此功能是将学校名作为登录名，随机生成6位密码，并通知所有该学校都教练的功能。"><a href="admin_leader_fix.jsp">通知领队</a></li>
+			<li title="当你在数据库里面更新了相关明文密码都时候，想从新计算那些密码都HASH时使用"><a href="admin_all_user_list_fix_update_org_password_to_hash.jsp">计算非hash密码的hash值</a></li>
+        </ul>
+      </li>
+	<%}%>
+		<li style="float:right;display:none;" id="sub_top"><a title="Top" href="#top">返回顶部</a></li>
+    </ul>
+  </div>
+  <%} %>
+	<%  
+		if (s.msgType != MSG.nothing) {
+	%>
+	<div id="message" class="alert alert-<%if(s.msgType==MSG.error){%>error<%}else if(s.msgType==MSG.warning){%>block<%}else if(s.msgType==MSG.notice){%>success<%}%>"><a class="close" data-dismiss="alert">×</a><%=s.message%></div>
+	<%if(s.msgType==MSG.notice){%><script type="text/javascript">setTimeout(function(){$("#message").fadeOut(1000);},60000);</script><%}%>
+	<%
+		s.msgType = MSG.nothing;
+		}
+	%>

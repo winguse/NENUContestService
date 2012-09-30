@@ -1,0 +1,16 @@
+<%
+	request.setCharacterEncoding("UTF-8");
+	CSSession s = (CSSession) request.getSession().getAttribute(
+			"CSSession");
+	if(s==null){
+		s=new CSSession();
+	}
+/*	if(request.getParameter("lang")!=null){
+		if(request.getParameter("lang").equals("cn")){
+			s.lang="cn";
+		}else if(request.getParameter("lang").equals("en")){
+			s.lang="en";
+		}
+	}*/
+	try{
+%>

@@ -1,0 +1,139 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<footer title="written by winguse.">&copy; 2012 <a href="http://acm.nenu.edu.cn">NENU ACM</a>. Written by <a href="http://winguse.com">Winguse</a>. All rights reserved.</footer>
+<%--<script type="text/javascript">
+	SwitchLanguage("<%=s.lang%>");
+	function SwitchLanguage(lang){
+		if(lang=='en'){
+			$("e").show();
+			$("c").hide();
+		}else{
+			$("e").hide();
+			$("c").show();
+		}
+	}
+</script> --%>
+</div>
+<div id="about" class="modal hide fade">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>关于</h3>
+  </div>
+  <div class="modal-body">
+    <h3 align="center">
+    	东师赛事服务系统
+    	<br />
+    	<small>NENU Contest Service</small>
+    </h3>
+    <div style="text-indent:2em;">
+    <p>感恩互助，东师欢迎您！</p>
+    <p><a href="http://winguse.com/">Wingus<span title="其实，整个网站的hash字符串，是我想说的一句话的字母拆成的，不知道，谁会遇到hash出的结果就是原话呢？">e</span></a>
+    	作品。有Bug恳请各位包涵并指正！Email: <a href="mailto:bug[at]winguse.com">bug[at]winguse.com</a>。项目将会在赛后<a href="http://winguse.com/blog/2012/09/15/nenu-contest-service-%e5%bc%80%e6%ba%90%e8%ae%a1%e5%88%92/">开源</a>，写得不是很好，如果用得上，希望对您有用。</p>
+    <p></p>
+    <p>UI 基于 <a href="http://builtwithbootstrap.tumblr.com/">Bootstrap</a>。</p>
+    </div>
+    <p align="right"><a href="http://acm.nenu.edu.cn/">&copy;2012 NENU ACM</a></p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-dismiss="modal" class="btn btn-primary">确定</a>
+  </div>
+</div>
+<div id="asking" class="modal hide fade">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3 id="asking_title"></h3>
+  </div>
+  <div class="modal-body" id="asking_content">
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-dismiss="modal" class="btn" id="asking_no">否</a>
+    <a href="#" data-dismiss="modal" class="btn btn-primary" id="asking_yes">是</a>
+  </div>
+</div>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$("*[rel=popover]").popover();
+$("*[rel=tooltip]").tooltip();
+function Asking(title,question,yesCallback,noCallback){
+	$$("asking_title").innerHTML=title;
+	$$("asking_content").innerHTML='<p>'+question+'</p>';
+	$('#asking_yes').bind('click', yesCallback);
+	$('#asking_no').bind('click', noCallback);
+	$('#asking').modal();
+}
+$("input[type='submit']").attr("value","提交(Submit)");
+$("table").addClass("tablesorter");
+$("table").tablesorter({sortLocaleCompare:true});
+$("a:contains('删除')").click(function(){
+	return confirm("你确定删除？");
+});
+$("a[title*='删除']").click(function(){
+	return confirm("你确定删除？");
+});
+<%if (s.user == null||s.user.getPermission() != User.USER_ADMINISTRATOR){%>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7801267-8']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  <% }else{%>
+
+  <%}%>
+
+  // fix sub nav on scroll
+  var $win = $(window)
+    , $nav = $('.subnav')
+    , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+    , isFixed = 0
+    ,$sub_top=$("#sub_top");
+  processScroll();
+  // hack sad times - holdover until rewrite for 2.1
+  $nav.on('click', function () {
+    if (!isFixed) setTimeout(function () {  $win.scrollTop($win.scrollTop() - 47) }, 10)
+  });
+
+  $win.on('scroll', processScroll);
+
+  function processScroll() {
+    var i, scrollTop = $win.scrollTop();
+    if (scrollTop >= navTop && !isFixed) {
+      isFixed = 1;
+      $nav.addClass('subnav-fixed');
+      $sub_top.show();
+    } else if (scrollTop <= navTop && isFixed) {
+      isFixed = 0;
+      $nav.removeClass('subnav-fixed');
+      $sub_top.hide();
+    }
+  }
+  function gotoH(hi){
+		window.location="#h_"+hi;
+		document.body.scrollTop-=80;
+		return false;
+	}
+  if(geth3){
+  var $sub_top=$("#sub_top"),hi=0;
+  $(".container h3").each(function(index){
+  	var $h=$(this);
+  	var substr=$h.find("small").text();
+  	$sub_top.before('<li><a href="#h_'+hi+'" onclick="return gotoH('+hi+');" title="'+substr+'">'+$h.text().replace(substr,"")+'</a></li>');
+  	$h.before('<a id="h_'+hi+'"></a>');
+  	hi++;
+  });
+  }
+</script>
+</body>
+</html>
+<%
+}catch(Exception e){
+	e.printStackTrace();
+	System.out.println(e.getMessage());
+	s.message="An Error Occours, Sorry. Technical Detial:"+e.getMessage();
+	s.msgType=MSG.error;
+	//response.sendRedirect(".");
+}finally{
+	request.getSession().setAttribute("CSSession", s);
+}
+%>

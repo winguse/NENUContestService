@@ -1,4 +1,8 @@
 NENUContestService
 ==================
 
-NENU ContestService, Running on http://acm.nenu.edu.cn/ContestService, For ACM/ICPC Aisa Changchun Site. May be it will be useful if you holding contest like us.
+The 2012 ACM-ICPC Asia Regional Contest (Changchun Site) is holding in NENU, and me, the contest service system author, decide to public the source code of the contest service system. 
+
+I wish it will be useful for you.
+
+License Under GPLv3, MIT.
