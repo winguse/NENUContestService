@@ -1,3 +1,9 @@
+> Taking a look at this project again years after and I think it's not that useful anymore.
+> I also find a [tweet](https://twitter.com/inntran/status/255138483746770944) complaining the code quality of it years ago. Yeah, the code here is not readable and maintainable. 
+> It's my student project, get it done within two weeks in Auguest 2012, at which time I know nothing about SSH (Structs / Spring / Hibernate) and I just learned about Java.
+> But it works well and putting into real usecase in September and I learn and invented a token base authorization after authentication here.
+
+
 NENUContestService
 ==================
 
